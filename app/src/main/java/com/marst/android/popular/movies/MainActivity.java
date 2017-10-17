@@ -42,6 +42,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * This method will get the top rated or most popular movies
+     * in a new background thread. The most popular is the default.
+     *
+     * @param isTopRated  If isTopRated true, the top movies will be fetched
+     *                    anf most popular otherwise.
+     */
     private void loadMovieData(boolean isTopRated) {
         URL url;
         if(!isTopRated) {
@@ -51,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         }
         new FetchMoviesTask().execute(url);
     }
+
 
     private class FetchMoviesTask extends AsyncTask<URL,Void,Movie[]>  {
 
@@ -99,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main,menu);
@@ -123,6 +132,10 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * This method will make movies grid visible and will
+     * hide the error message.
+     */
     private void showMoviesGridView() {
 
         mMoviesErrorTextView.setVisibility(View.INVISIBLE);
@@ -130,6 +143,10 @@ public class MainActivity extends AppCompatActivity {
         mMoviesGridView.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * This method will make the error message visible and hide the
+     * movies grid.
+     */
     private void showErrorMsg() {
 
         mMoviesGridView.setVisibility(View.INVISIBLE);

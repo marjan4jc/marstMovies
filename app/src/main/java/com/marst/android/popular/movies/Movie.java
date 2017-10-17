@@ -199,6 +199,7 @@ public class Movie implements Parcelable {
                 '}';
     }
 
+
     private Movie(Parcel in) {
       voteAverage = in.readString();
       posterPath = in.readString();

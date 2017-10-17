@@ -40,8 +40,8 @@ public final class NetworkUtils {
 
     private static final String DEFAULT_SIZE = W_185;
 
-    /*
-        Retrieves the api.key from a local.properties file
+    /**
+     * Retrieves the api.key from a local.properties file
      */
     private static final String getApiKey(){
         return BuildConfig.KEY;

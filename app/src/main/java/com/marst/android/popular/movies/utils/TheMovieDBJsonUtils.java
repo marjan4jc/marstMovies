@@ -57,6 +57,16 @@ public final class TheMovieDBJsonUtils {
     private static final String MDB_STATUS_MSG = "status_message";
     private static final String MDB_SUCCESS = "success";
 
+
+    /**
+     * This method parses JSON from a web response and
+     * returns an Array of Movies.
+     *
+     * @param jsonString The JSON response from the server
+     * @return Array of Movies with some movie details
+     * @throws JSONException If JSON data can not be properly parsed
+     */
+
     public static Movie[] getMoviesFromJson(String jsonString) throws JSONException {
 
         JSONObject movieJson = new JSONObject(jsonString);
