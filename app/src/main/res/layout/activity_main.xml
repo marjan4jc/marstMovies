@@ -21,7 +21,9 @@
         android:layout_height="wrap_content"
         android:padding="16dp"
         android:text="@string/internet_error_message"
-        android:textSize="50sp"
+        android:textSize="25sp"
+        android:gravity="center"
+        android:layout_gravity="center"
         android:visibility="invisible" />
 
     <ProgressBar
