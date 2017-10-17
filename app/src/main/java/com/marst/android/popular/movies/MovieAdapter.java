@@ -2,6 +2,7 @@ package com.marst.android.popular.movies;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,7 @@ class MovieAdapter extends ArrayAdapter<Movie> {
     public MovieAdapter(Activity activityContext, List<Movie> movies) {
         super(activityContext, 0 ,movies);
     }
+
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
