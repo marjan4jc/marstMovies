@@ -41,7 +41,7 @@ class MovieAdapter extends ArrayAdapter<Movie> {
                 && movie.getPosterPath()!=null && !"".equals(movie.getPosterPath())) {
             Picasso.with(getContext()).load(NetworkUtils.buildPosterURL(movie.getPosterPath())).into(moviePosterImg);
         } else {
-            Log.d(TAG,"Network Connection not available");
+            Log.d(TAG, getContext().getString(R.string.no_connection));
         }
         moviePosterImg.setOnClickListener(new View.OnClickListener() {
 
@@ -49,7 +49,7 @@ class MovieAdapter extends ArrayAdapter<Movie> {
             public void onClick(View v) {
 
                 Intent movieDetailsIntent = new Intent(getContext(),DetailsActivity.class);
-                movieDetailsIntent.putExtra("movie",movie);
+                movieDetailsIntent.putExtra(getContext().getString(R.string.movie_intent),movie);
                 getContext().startActivity(movieDetailsIntent);
 
             }

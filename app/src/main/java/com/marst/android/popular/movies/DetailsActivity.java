@@ -34,8 +34,8 @@ public class DetailsActivity extends AppCompatActivity {
         Intent movieIntent = getIntent();
         Movie movie = null;
 
-        if (movieIntent.hasExtra("movie")) {
-            movie = movieIntent.getExtras().getParcelable("movie");
+        if (movieIntent.hasExtra(getString(R.string.movie_intent))) {
+            movie = movieIntent.getExtras().getParcelable(getString(R.string.movie_intent));
 
         }
 
@@ -56,11 +56,11 @@ public class DetailsActivity extends AppCompatActivity {
                 mMovieUserRating.setText(movie.getVoteAverage());
 
             } else {
-                Toast.makeText(DetailsActivity.this,"Details Data is missing",Toast.LENGTH_LONG).show();
-                Log.d(TAG,"Details Data is missing");
+                Toast.makeText(DetailsActivity.this,getString(R.string.no_details_data),Toast.LENGTH_LONG).show();
+                Log.d(TAG,getString(R.string.no_details_data));
             }
         } else {
-            Log.d(TAG,"No Network Connection Available");
+            Log.d(TAG,getString(R.string.no_connection));
             Intent back = new Intent(DetailsActivity.this,MainActivity.class);
             startActivity(back);
         }

@@ -8,4 +8,8 @@
     <string name="most_popular">Most Popular</string>
 
     <string name="details_activity">Movie Details</string>
+
+    <string name="movie_intent">movie</string>
+    <string name="no_details_data">Details Data is missing</string>
+    <string name="no_connection">Network Connection not available!</string>
 </resources>
