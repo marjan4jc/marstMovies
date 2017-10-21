@@ -28,31 +28,40 @@ class MovieAdapter extends ArrayAdapter<Movie> {
 
         final Movie movie = getItem(position);
 
+        ViewHolder holder;
+
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).
                     inflate(R.layout.movie_item, parent, false);
+            holder = new ViewHolder();
+            holder.moviePoster = convertView.findViewById(R.id.movie_image);
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder)convertView.getTag();
         }
 
-        ImageView moviePosterImg = convertView.findViewById(R.id.movie_image);
-
-        if(NetworkUtils.isNetworkConnectionAvailable(getContext()) && movie!=null
-                && movie.getPosterPath()!=null && !"".equals(movie.getPosterPath())) {
-            Picasso.with(getContext()).load(NetworkUtils.buildPosterURL(movie.getPosterPath())).into(moviePosterImg);
+        if (NetworkUtils.isNetworkConnectionAvailable(getContext()) && movie != null
+                && movie.getPosterPath() != null && !"".equals(movie.getPosterPath())) {
+            Picasso.with(getContext()).load(NetworkUtils.buildPosterURL(movie.getPosterPath())).into(holder.moviePoster);
         } else {
             Log.d(TAG, getContext().getString(R.string.no_connection));
         }
-        moviePosterImg.setOnClickListener(new View.OnClickListener() {
+        holder.moviePoster.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
 
-                Intent movieDetailsIntent = new Intent(getContext(),DetailsActivity.class);
-                movieDetailsIntent.putExtra(getContext().getString(R.string.movie_intent),movie);
+                Intent movieDetailsIntent = new Intent(getContext(), DetailsActivity.class);
+                movieDetailsIntent.putExtra(getContext().getString(R.string.movie_intent), movie);
                 getContext().startActivity(movieDetailsIntent);
 
             }
         });
 
         return convertView;
+    }
+
+    static class ViewHolder{
+        private ImageView moviePoster;
     }
 }
