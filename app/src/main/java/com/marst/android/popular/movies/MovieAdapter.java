@@ -2,7 +2,6 @@ package com.marst.android.popular.movies;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,11 +9,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
+import com.marst.android.popular.movies.utils.NetworkUtils;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
-
-import com.marst.android.popular.movies.utils.NetworkUtils;
 
 class MovieAdapter extends ArrayAdapter<Movie> {
 

@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".DetailsActivity">
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -21,6 +22,14 @@
         android:gravity="center_vertical|start"
         android:paddingLeft="16dp"
         android:paddingStart="16dp"/>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -63,5 +72,7 @@
             android:padding="16dp"
             style="@style/TextAppearance.AppCompat.Notification.Title.Media"
             />
+        </LinearLayout>
+        </ScrollView>
     </LinearLayout>
 </merge>
