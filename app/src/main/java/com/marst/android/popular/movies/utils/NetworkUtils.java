@@ -1,12 +1,14 @@
 package com.marst.android.popular.movies.utils;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.util.Log;
 
 import com.marst.android.popular.movies.BuildConfig;
+import com.marst.android.popular.movies.R;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,6 +28,8 @@ public final class NetworkUtils {
     private static final String TOP_RATED_MOVIES_URL="http://api.themoviedb.org/3/movie/top_rated";
 
     private static final String KEY_PARAM="api_key";
+
+    private static Resources resources = Resources.getSystem();
 
     /*
         Phone size
@@ -58,10 +62,10 @@ public final class NetworkUtils {
         try {
             url = new URL(uri.toString());
         } catch (MalformedURLException e) {
-            Log.e(TAG,"Malformed URL",e);
+            Log.e(TAG,resources.getString(R.string.malformed_url),e);
         }
 
-        Log.v(TAG, "Built URI " + url);
+        Log.v(TAG, resources.getString(R.string.built_uri)+ url);
 
         return url;
     }
@@ -122,7 +126,7 @@ public final class NetworkUtils {
             if (hasInput) {
                 return scanner.next();
             } else {
-                Log.v(TAG,"No Response from URL: " + url.toString());
+                Log.v(TAG,resources.getString(R.string.no_url_response) + url.toString());
                 return null;
             }
         } finally {

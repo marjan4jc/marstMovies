@@ -1,5 +1,6 @@
 package com.marst.android.popular.movies.utils;
 
+import android.content.res.Resources;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -7,6 +8,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.marst.android.popular.movies.Movie;
+import com.marst.android.popular.movies.R;
+
+import static android.provider.Settings.Global.getString;
 
 /**
  * Utility functions to handle TheMoviesDB JSON data.
@@ -57,7 +61,7 @@ public final class TheMovieDBJsonUtils {
     private static final String MDB_STATUS_MSG = "status_message";
     private static final String MDB_SUCCESS = "success";
 
-
+    private static Resources resources = Resources.getSystem();
     /**
      * This method parses JSON from a web response and
      * returns an Array of Movies.
@@ -80,7 +84,7 @@ public final class TheMovieDBJsonUtils {
             if(movieJson.has(MDB_STATUS_MSG))
                 statusMsg = movieJson.getString(MDB_STATUS_CODE);
 
-            Log.d(TAG,"Error code: "+errorCode+ ", status message: "+statusMsg);
+            Log.d(TAG, resources.getString(R.string.err_code) +errorCode+ resources.getString(R.string.status_msg)+statusMsg);
         }
 
         JSONArray movieArray = movieJson.getJSONArray(MDB_RESULTS);

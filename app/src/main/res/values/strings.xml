@@ -12,4 +12,9 @@
     <string name="movie_intent">movie</string>
     <string name="no_details_data">Details Data is missing</string>
     <string name="no_connection">Network Connection not available!</string>
+    <string name="err_code">Error code: </string>
+    <string name="status_msg">, status message: </string>
+    <string name="malformed_url">Malformed URL</string>
+    <string name="built_uri">Built URI </string>
+    <string name="no_url_response">No Response from URL: </string>
 </resources>
