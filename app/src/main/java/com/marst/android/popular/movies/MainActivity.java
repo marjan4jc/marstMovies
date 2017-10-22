@@ -1,6 +1,8 @@
 package com.marst.android.popular.movies;
 
+import android.annotation.TargetApi;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -56,10 +58,13 @@ public class MainActivity extends AppCompatActivity {
         } else {
             url = NetworkUtils.buildTopRatedMoviesURL();
         }
-        new FetchMoviesTask().execute(url);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.CUPCAKE) {
+            new FetchMoviesTask().execute(url);
+        }
     }
 
 
+    @TargetApi(Build.VERSION_CODES.CUPCAKE)
     private class FetchMoviesTask extends AsyncTask<URL,Void,Movie[]>  {
 
         @Override

@@ -1,6 +1,7 @@
 package com.marst.android.popular.movies;
 
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +19,7 @@ public class DetailsActivity extends AppCompatActivity {
     private TextView mMovieUserRating;
     private TextView mMovieReleaseDate;
     private TextView mPlotSynopsis;
+
     private static final String TAG = DetailsActivity.class.getSimpleName();
 
     @Override
@@ -25,11 +27,13 @@ public class DetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
 
-        mMovieTitle = (TextView) findViewById(R.id.movie_title);
+        DetailsActivityBinding binding = DataBindingUtil.setContentView(this,R.layout.activity_details);
+
+//        mMovieTitle = (TextView) findViewById(R.id.movie_title);
         mMoviePosterThumbnail = (ImageView) findViewById(R.id.movie_poster_thumbnail);
-        mMovieUserRating = (TextView) findViewById(R.id.user_rating);
-        mMovieReleaseDate = (TextView) findViewById(R.id.release_date);
-        mPlotSynopsis = (TextView) findViewById(R.id.plot_synopsis);
+//        mMovieUserRating = (TextView) findViewById(R.id.user_rating);
+//        mMovieReleaseDate = (TextView) findViewById(R.id.release_date);
+//        mPlotSynopsis = (TextView) findViewById(R.id.plot_synopsis);
 
         Intent movieIntent = getIntent();
         Movie movie = null;

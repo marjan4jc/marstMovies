@@ -3,14 +3,12 @@ package com.marst.android.popular.movies.utils;
 import android.content.res.Resources;
 import android.util.Log;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.marst.android.popular.movies.Movie;
 import com.marst.android.popular.movies.R;
 
-import static android.provider.Settings.Global.getString;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Utility functions to handle TheMoviesDB JSON data.
