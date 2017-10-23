@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.marst.android.popular.movies.data.Details;
+import com.marst.android.popular.movies.databinding.ActivityDetailsBinding;
 import com.marst.android.popular.movies.utils.NetworkUtils;
 import com.squareup.picasso.Picasso;
 
@@ -27,7 +29,7 @@ public class DetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
 
-        DetailsActivityBinding binding = DataBindingUtil.setContentView(this,R.layout.activity_details);
+        ActivityDetailsBinding binding = DataBindingUtil.setContentView(this,R.layout.activity_details);
 
 //        mMovieTitle = (TextView) findViewById(R.id.movie_title);
         mMoviePosterThumbnail = (ImageView) findViewById(R.id.movie_poster_thumbnail);
@@ -51,13 +53,17 @@ public class DetailsActivity extends AppCompatActivity {
                     && movie.getReleaseDate()!=null && !"".equals(movie.getReleaseDate())
                     && movie.getVoteAverage()!=null && !"".equals(movie.getVoteAverage())) {
 
+                Details details = new Details(movie.getOriginalTitle(),movie.getPosterPath(),
+                        movie.getVoteCount(),movie.getReleaseDate(),movie.getOverview());
                 Picasso.with(DetailsActivity.this).load(NetworkUtils.
-                        buildPosterURL(movie.getPosterPath())).into(mMoviePosterThumbnail);
+                        buildPosterURL(details.getMoviePosterThumbnail())).into(mMoviePosterThumbnail);
 
-                mMovieTitle.setText(movie.getOriginalTitle());
-                mPlotSynopsis.setText(movie.getOverview());
-                mMovieReleaseDate.setText(movie.getReleaseDate());
-                mMovieUserRating.setText(movie.getVoteAverage());
+                binding.setDetails(details);
+
+//                mMovieTitle.setText(movie.getOriginalTitle());
+//                mPlotSynopsis.setText(movie.getOverview());
+//                mMovieReleaseDate.setText(movie.getReleaseDate());
+//                mMovieUserRating.setText(movie.getVoteAverage());
 
             } else {
                 Toast.makeText(DetailsActivity.this,getString(R.string.no_details_data),Toast.LENGTH_LONG).show();

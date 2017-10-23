@@ -54,13 +54,11 @@ public class MainActivity extends AppCompatActivity {
     private void loadMovieData(boolean isTopRated) {
         URL url;
         if(!isTopRated) {
-            url = NetworkUtils.buildPopularMoviesURL();
+            url = NetworkUtils.buildPopularMoviesURL(MainActivity.this);
         } else {
-            url = NetworkUtils.buildTopRatedMoviesURL();
+            url = NetworkUtils.buildTopRatedMoviesURL(MainActivity.this);
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.CUPCAKE) {
-            new FetchMoviesTask().execute(url);
-        }
+        new FetchMoviesTask().execute(url);
     }
 
 
@@ -85,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
                 //If there i a network connection try to fetch data
                 if(NetworkUtils.isNetworkConnectionAvailable(MainActivity.this)) {
                     String jsonString = NetworkUtils.getResponseFromHttpUrl(moviesUrl);
-                    return TheMovieDBJsonUtils.getMoviesFromJson(jsonString);
+                    return TheMovieDBJsonUtils.getMoviesFromJson(jsonString,MainActivity.this);
                 } else {
                     return null;
                 }

@@ -29,7 +29,6 @@ public final class NetworkUtils {
 
     private static final String KEY_PARAM="api_key";
 
-    private static Resources resources = Resources.getSystem();
 
     /*
         Phone size
@@ -57,15 +56,15 @@ public final class NetworkUtils {
      * @param uri Uri that will be converted to URL
      * @return The URL that will be used for the requests
      */
-    private static final URL convertUri2URL(Uri uri) {
+    private static final URL convertUri2URL(Uri uri, Context context) {
         URL url = null;
         try {
             url = new URL(uri.toString());
         } catch (MalformedURLException e) {
-            Log.e(TAG,resources.getString(R.string.malformed_url),e);
+            Log.e(TAG,Resources.getSystem().getString(R.string.malformed_url),e);
         }
 
-        Log.v(TAG, resources.getString(R.string.built_uri)+ url);
+        Log.v(TAG, context.getResources().getString(R.string.built_uri)+ url);
 
         return url;
     }
@@ -86,12 +85,12 @@ public final class NetworkUtils {
      *
      * @return The URL to use to query themoviedb service for popular movies.
      */
-    public static URL buildPopularMoviesURL() {
+    public static URL buildPopularMoviesURL(Context context) {
         Uri buildUri = Uri.parse(POPULAR_MOVIES_URL).buildUpon().
                 appendQueryParameter(KEY_PARAM,getApiKey()).
                 build();
 
-        return convertUri2URL(buildUri);
+        return convertUri2URL(buildUri,context);
     }
 
     /**
@@ -99,12 +98,12 @@ public final class NetworkUtils {
      *
      * @return The Url to use to query themoviedb service for the top rated movies.
      */
-    public static URL buildTopRatedMoviesURL(){
+    public static URL buildTopRatedMoviesURL(Context context){
         Uri buildUri = Uri.parse(TOP_RATED_MOVIES_URL).buildUpon().
                 appendQueryParameter(KEY_PARAM,getApiKey()).
                 build();
 
-        return convertUri2URL(buildUri);
+        return convertUri2URL(buildUri,context);
     }
 
     /**
@@ -126,7 +125,7 @@ public final class NetworkUtils {
             if (hasInput) {
                 return scanner.next();
             } else {
-                Log.v(TAG,resources.getString(R.string.no_url_response) + url.toString());
+                Log.v(TAG,Resources.getSystem().getString(R.string.no_url_response) + url.toString());
                 return null;
             }
         } finally {
