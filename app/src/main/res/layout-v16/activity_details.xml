@@ -1,17 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     tools:context=".DetailsActivity">
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-    <TextView
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+ <TextView
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:id="@+id/movie_title"
@@ -21,7 +16,9 @@
         android:fontFamily="monospace"
         android:gravity="center_vertical|start"
         android:paddingLeft="16dp"
-        android:paddingStart="16dp"/>
+        android:paddingStart="16dp"
+     android:text="@{details.movieTitle}"
+        />
 
         <ScrollView
             android:layout_width="match_parent"
@@ -56,12 +53,14 @@
                     android:id="@+id/release_date"
                     android:paddingTop="16dp"
                     android:paddingBottom="16dp"
+                    android:text="@{details.movieReleaseDate}"
                     />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/user_rating"
                     android:paddingTop="16dp"
+                    android:text="@{details.movieUserRating}"
                     />
             </LinearLayout>
         </LinearLayout>
@@ -71,8 +70,9 @@
             android:id="@+id/plot_synopsis"
             android:padding="16dp"
             style="@style/TextAppearance.AppCompat.Notification.Title.Media"
+            android:text="@{details.plotSynopsis}"
             />
         </LinearLayout>
         </ScrollView>
-    </LinearLayout>
-</merge>
+</LinearLayout>
+</layout>

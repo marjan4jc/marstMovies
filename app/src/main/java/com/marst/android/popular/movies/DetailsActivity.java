@@ -1,6 +1,7 @@
 package com.marst.android.popular.movies;
 
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.marst.android.popular.movies.data.Details;
+import com.marst.android.popular.movies.databinding.ActivityDetailsBinding;
 import com.marst.android.popular.movies.utils.NetworkUtils;
 import com.squareup.picasso.Picasso;
 
@@ -18,6 +21,7 @@ public class DetailsActivity extends AppCompatActivity {
     private TextView mMovieUserRating;
     private TextView mMovieReleaseDate;
     private TextView mPlotSynopsis;
+
     private static final String TAG = DetailsActivity.class.getSimpleName();
 
     @Override
@@ -25,11 +29,13 @@ public class DetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
 
-        mMovieTitle = (TextView) findViewById(R.id.movie_title);
+        ActivityDetailsBinding binding = DataBindingUtil.setContentView(this,R.layout.activity_details);
+
+//        mMovieTitle = (TextView) findViewById(R.id.movie_title);
         mMoviePosterThumbnail = (ImageView) findViewById(R.id.movie_poster_thumbnail);
-        mMovieUserRating = (TextView) findViewById(R.id.user_rating);
-        mMovieReleaseDate = (TextView) findViewById(R.id.release_date);
-        mPlotSynopsis = (TextView) findViewById(R.id.plot_synopsis);
+//        mMovieUserRating = (TextView) findViewById(R.id.user_rating);
+//        mMovieReleaseDate = (TextView) findViewById(R.id.release_date);
+//        mPlotSynopsis = (TextView) findViewById(R.id.plot_synopsis);
 
         Intent movieIntent = getIntent();
         Movie movie = null;
@@ -47,13 +53,17 @@ public class DetailsActivity extends AppCompatActivity {
                     && movie.getReleaseDate()!=null && !"".equals(movie.getReleaseDate())
                     && movie.getVoteAverage()!=null && !"".equals(movie.getVoteAverage())) {
 
+                Details details = new Details(movie.getOriginalTitle(),movie.getPosterPath(),
+                        movie.getVoteCount(),movie.getReleaseDate(),movie.getOverview());
                 Picasso.with(DetailsActivity.this).load(NetworkUtils.
-                        buildPosterURL(movie.getPosterPath())).into(mMoviePosterThumbnail);
+                        buildPosterURL(details.getMoviePosterThumbnail())).into(mMoviePosterThumbnail);
 
-                mMovieTitle.setText(movie.getOriginalTitle());
-                mPlotSynopsis.setText(movie.getOverview());
-                mMovieReleaseDate.setText(movie.getReleaseDate());
-                mMovieUserRating.setText(movie.getVoteAverage());
+                binding.setDetails(details);
+
+//                mMovieTitle.setText(movie.getOriginalTitle());
+//                mPlotSynopsis.setText(movie.getOverview());
+//                mMovieReleaseDate.setText(movie.getReleaseDate());
+//                mMovieUserRating.setText(movie.getVoteAverage());
 
             } else {
                 Toast.makeText(DetailsActivity.this,getString(R.string.no_details_data),Toast.LENGTH_LONG).show();
