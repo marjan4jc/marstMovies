@@ -16,7 +16,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-class MovieAdapter extends ArrayAdapter<Movie> {
+public class MovieAdapter extends ArrayAdapter<Movie> {
 
     private static final String TAG = MovieAdapter.class.getSimpleName();
 
@@ -45,7 +45,11 @@ class MovieAdapter extends ArrayAdapter<Movie> {
 
         if (NetworkUtils.isNetworkConnectionAvailable(getContext()) && movie != null
                 && movie.getPosterPath() != null && !"".equals(movie.getPosterPath())) {
-            Picasso.with(getContext()).load(NetworkUtils.buildPosterURL(movie.getPosterPath())).into(holder.moviePoster);
+            Picasso.with(getContext())
+                    .load(NetworkUtils.buildPosterURL(movie.getPosterPath()))
+                    .placeholder(R.drawable.placeholder)
+                    .error(R.drawable.error)
+                    .into(holder.moviePoster);
         } else {
             Log.d(TAG, getContext().getString(R.string.no_connection));
         }

@@ -1,24 +1,23 @@
 package com.marst.android.popular.movies;
 
-import android.annotation.TargetApi;
-import android.os.AsyncTask;
-import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.marst.android.popular.movies.data.Movie;
+import com.marst.android.popular.movies.services.FetchMoviesTask;
+import com.marst.android.popular.movies.services.OnEventListener;
+import com.marst.android.popular.movies.utils.MenuHelper;
+import com.marst.android.popular.movies.utils.NetworkUtils;
 
 import java.net.URL;
 import java.util.Arrays;
-
-import com.marst.android.popular.movies.data.Movie;
-import com.marst.android.popular.movies.utils.TheMovieDBJsonUtils;
-import com.marst.android.popular.movies.utils.MenuHelper;
-import com.marst.android.popular.movies.utils.NetworkUtils;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -59,58 +58,32 @@ public class MainActivity extends AppCompatActivity {
         } else {
             url = NetworkUtils.buildTopRatedMoviesURL(MainActivity.this);
         }
-        new FetchMoviesTask().execute(url);
-    }
 
+        FetchMoviesTask fetchMoviesTask = new FetchMoviesTask(MainActivity.this, new OnEventListener<Movie[]>(){
 
-    @TargetApi(Build.VERSION_CODES.CUPCAKE)
-    private class FetchMoviesTask extends AsyncTask<URL,Void,Movie[]>  {
+            @Override
+            public void onSuccess(Movie[] movies) {
+                mProgressBarrIndicator.setVisibility(View.INVISIBLE);
+                if(movies!=null) {
+                    showMoviesGridView();
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            mProgressBarrIndicator.setVisibility(View.VISIBLE);
-        }
+                    MovieAdapter movieAdapter = new
+                            MovieAdapter(MainActivity.this, Arrays.asList(movies));
+                    mMoviesGridView.setAdapter(movieAdapter);
 
-        @Override
-        protected Movie[] doInBackground(URL... params) {
-
-            if ( params.length == 0 ){
-                return null;
-            }
-            URL moviesUrl = params[0];
-
-            try {
-                //If there i a network connection try to fetch data
-                if(NetworkUtils.isNetworkConnectionAvailable(MainActivity.this)) {
-                    String jsonString = NetworkUtils.getResponseFromHttpUrl(moviesUrl);
-                    return TheMovieDBJsonUtils.getMoviesFromJson(jsonString,MainActivity.this);
                 } else {
-                    return null;
+                    showErrorMsg();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
+
             }
 
-        }
-
-        @Override
-        protected void onPostExecute(Movie[] movies) {
-            mProgressBarrIndicator.setVisibility(View.INVISIBLE);
-            if(movies!=null) {
-                showMoviesGridView();
-
-                MovieAdapter movieAdapter = new
-                        MovieAdapter(MainActivity.this, Arrays.asList(movies));
-                mMoviesGridView.setAdapter(movieAdapter);
-
-            } else {
+            @Override
+            public void onFailure(Exception e) {
                 showErrorMsg();
             }
-        }
+        });
+        fetchMoviesTask.execute(url);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
