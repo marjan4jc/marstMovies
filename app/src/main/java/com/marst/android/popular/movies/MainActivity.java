@@ -15,6 +15,7 @@ import android.widget.TextView;
 import java.net.URL;
 import java.util.Arrays;
 
+import com.marst.android.popular.movies.data.Movie;
 import com.marst.android.popular.movies.utils.TheMovieDBJsonUtils;
 import com.marst.android.popular.movies.utils.MenuHelper;
 import com.marst.android.popular.movies.utils.NetworkUtils;

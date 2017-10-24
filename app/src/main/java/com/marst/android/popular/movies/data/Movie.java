@@ -1,4 +1,4 @@
-package com.marst.android.popular.movies;
+package com.marst.android.popular.movies.data;
 
 
 import android.os.Parcel;
@@ -35,7 +35,6 @@ public class Movie implements Parcelable {
     private String overview;
 
     private String releaseDate;
-
 
     public Movie(String ID, String voteAverage, String posterPath, String originalTitle, String overview, String releaseDate) {
         this.ID = ID;
@@ -158,7 +157,16 @@ public class Movie implements Parcelable {
         this.releaseDate = releaseDate;
     }
 
-
+    public boolean hasAllProperties(){
+        if (getPosterPath()!=null && !"".equals(getPosterPath())
+                && getOriginalTitle()!=null && !"".equals(getOriginalTitle())
+                && getOverview()!=null && !"".equals(getOverview())
+                && getReleaseDate()!=null && !"".equals(getReleaseDate())
+                && getVoteAverage()!=null && !"".equals(getVoteAverage())){
+            return true;
+        }
+        return false;
+    }
 
     @Override
     public int hashCode() {

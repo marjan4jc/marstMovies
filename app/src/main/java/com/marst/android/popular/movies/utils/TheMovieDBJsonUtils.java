@@ -1,10 +1,9 @@
 package com.marst.android.popular.movies.utils;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.util.Log;
 
-import com.marst.android.popular.movies.Movie;
+import com.marst.android.popular.movies.data.Movie;
 import com.marst.android.popular.movies.R;
 
 import org.json.JSONArray;
