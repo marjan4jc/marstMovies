@@ -1,6 +1,9 @@
 package com.marst.android.popular.movies.data;
 
-public class Details {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Details implements Parcelable {
     private final String movieTitle;
     private final String moviePosterThumbnail;
     private final String movieUserRating;
@@ -14,6 +17,26 @@ public class Details {
         this.movieReleaseDate = movieReleaseDate;
         this.plotSynopsis = plotSynopsis;
     }
+
+    protected Details(Parcel in) {
+        movieTitle = in.readString();
+        moviePosterThumbnail = in.readString();
+        movieUserRating = in.readString();
+        movieReleaseDate = in.readString();
+        plotSynopsis = in.readString();
+    }
+
+    public static final Creator<Details> CREATOR = new Creator<Details>() {
+        @Override
+        public Details createFromParcel(Parcel in) {
+            return new Details(in);
+        }
+
+        @Override
+        public Details[] newArray(int size) {
+            return new Details[size];
+        }
+    };
 
     public String getMovieTitle() {
         return movieTitle;
@@ -33,5 +56,18 @@ public class Details {
 
     public String getPlotSynopsis() {
         return plotSynopsis;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(plotSynopsis);
+        dest.writeString(movieUserRating);
+        dest.writeString(movieReleaseDate);
+        dest.writeString(movieTitle);
     }
 }
