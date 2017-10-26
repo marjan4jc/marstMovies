@@ -8,15 +8,12 @@ import android.os.Build;
 import android.view.View;
 import android.widget.ProgressBar;
 
-import com.marst.android.popular.movies.MainActivity;
-import com.marst.android.popular.movies.MovieAdapter;
 import com.marst.android.popular.movies.R;
 import com.marst.android.popular.movies.data.Movie;
 import com.marst.android.popular.movies.utils.NetworkUtils;
 import com.marst.android.popular.movies.utils.TheMovieDBJsonUtils;
 
 import java.net.URL;
-import java.util.Arrays;
 
 @TargetApi(Build.VERSION_CODES.CUPCAKE)
 public class FetchMoviesTask extends AsyncTask<URL,Void,Movie[]> {
@@ -58,7 +55,6 @@ public class FetchMoviesTask extends AsyncTask<URL,Void,Movie[]> {
             e.printStackTrace();
             return null;
         }
-
     }
 
     @Override

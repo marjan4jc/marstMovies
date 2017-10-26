@@ -5,15 +5,10 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <GridView
+    <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/movies_grid"
-        android:columnWidth="150dp"
-        android:numColumns="auto_fit"
-        android:verticalSpacing="0dp"
-        android:horizontalSpacing="0dp"
-        />
+        android:id="@+id/movies_grid"/>
 
     <TextView
         android:id="@+id/movies_error_message_display"

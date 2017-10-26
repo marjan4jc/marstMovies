@@ -1,14 +1,16 @@
 package com.marst.android.popular.movies;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.marst.android.popular.movies.data.Movie;
 import com.marst.android.popular.movies.services.FetchMoviesTask;
@@ -23,10 +25,13 @@ public class MainActivity extends AppCompatActivity {
 
     private GridView mMoviesGridView;
 
+    private GridLayoutManager mGridLayoutManager;
+
     private TextView mMoviesErrorTextView;
 
     private ProgressBar mProgressBarrIndicator;
 
+    private RecyclerView mRecyclerView;
 
 
     @Override
@@ -34,7 +39,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mMoviesGridView = (GridView) findViewById(R.id.movies_grid);
+        mRecyclerView = (RecyclerView) findViewById(R.id.movies_grid);
+
+//        mMoviesGridView = (GridView) findViewById(R.id.movies_grid);
 
         mMoviesErrorTextView = (TextView) findViewById(R.id.movies_error_message_display);
 
@@ -67,9 +74,17 @@ public class MainActivity extends AppCompatActivity {
                 if(movies!=null) {
                     showMoviesGridView();
 
+                    mGridLayoutManager = new GridLayoutManager(MainActivity.this,2);
+
+                    //Always returns 20 items
+                    mRecyclerView.setHasFixedSize(true);
+
+                    mRecyclerView.setLayoutManager(mGridLayoutManager);
+
                     MovieAdapter movieAdapter = new
-                            MovieAdapter(MainActivity.this, Arrays.asList(movies));
-                    mMoviesGridView.setAdapter(movieAdapter);
+                            MovieAdapter(movies.length, MainActivity.this, Arrays.asList(movies));
+
+                    mRecyclerView.setAdapter(movieAdapter);
 
                 } else {
                     showErrorMsg();
@@ -117,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
 
         mMoviesErrorTextView.setVisibility(View.INVISIBLE);
 
-        mMoviesGridView.setVisibility(View.VISIBLE);
+        mRecyclerView.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -126,8 +141,16 @@ public class MainActivity extends AppCompatActivity {
      */
     private void showErrorMsg() {
 
-        mMoviesGridView.setVisibility(View.INVISIBLE);
+        mRecyclerView.setVisibility(View.INVISIBLE);
 
         mMoviesErrorTextView.setVisibility(View.VISIBLE);
     }
+//
+//    @Override
+//    public void onListItemClick(int clickedItemIndex) {
+//        Intent movieDetailsIntent = new Intent(MainActivity.this, DetailsActivity.class);
+//        movieDetailsIntent.putExtra(getString(R.string.movie_intent), movie);
+//        startActivity(movieDetailsIntent);
+//
+//    }
 }
