@@ -9,7 +9,7 @@
 
     <string name="details_activity">Movie Details</string>
 
-    <string name="movie_intent">movie</string>
+    <string name="movie_intent">movieOld</string>
     <string name="no_details_data">Details Data is missing</string>
     <string name="no_connection">Network Connection not available!</string>
     <string name="err_code">Error code: </string>

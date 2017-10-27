@@ -3,7 +3,7 @@ package com.marst.android.popular.movies.utils;
 import android.content.Context;
 import android.util.Log;
 
-import com.marst.android.popular.movies.data.Movie;
+import com.marst.android.popular.movies.data.MovieOld;
 import com.marst.android.popular.movies.R;
 
 import org.json.JSONArray;
@@ -22,7 +22,7 @@ public final class TheMovieDBJsonUtils {
 
 
 
-    // Movie parameters
+    // MovieOld parameters
 
     private static final String MDB_VOTE_COUNT = "vote_count";
 
@@ -69,10 +69,10 @@ public final class TheMovieDBJsonUtils {
      * @throws JSONException If JSON data can not be properly parsed
      */
 
-    public static Movie[] getMoviesFromJson(String jsonString, Context context) throws JSONException {
+    public static MovieOld[] getMoviesFromJson(String jsonString, Context context) throws JSONException {
 
         JSONObject movieJson = new JSONObject(jsonString);
-        Movie[] movies;
+        MovieOld[] movies;
 
         if (movieJson.has(MDB_STATUS_CODE)) {
 
@@ -86,13 +86,13 @@ public final class TheMovieDBJsonUtils {
         }
 
         JSONArray movieArray = movieJson.getJSONArray(MDB_RESULTS);
-        movies = new Movie[movieArray.length()];
+        movies = new MovieOld[movieArray.length()];
 
         for (int i = 0; i < movieArray.length(); i++) {
 
             JSONObject movieJsonObject = movieArray.getJSONObject(i);
 
-            movies[i] = new Movie(movieJsonObject.getString(MDB_ID),
+            movies[i] = new MovieOld(movieJsonObject.getString(MDB_ID),
                     movieJsonObject.getString(MDB_VOTE_AVERAGE),
                     movieJsonObject.getString(MDB_POSTER_PATH),
                     movieJsonObject.getString(MDB_ORIGINAL_TITLE),

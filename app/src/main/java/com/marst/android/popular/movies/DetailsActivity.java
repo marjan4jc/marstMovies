@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.marst.android.popular.movies.data.Details;
-import com.marst.android.popular.movies.data.Movie;
+import com.marst.android.popular.movies.data.MovieOld;
 import com.marst.android.popular.movies.databinding.ActivityDetailsBinding;
 import com.marst.android.popular.movies.utils.NetworkUtils;
 import com.squareup.picasso.Picasso;
@@ -31,19 +31,19 @@ public class DetailsActivity extends AppCompatActivity {
         mMoviePosterThumbnail = (ImageView) findViewById(R.id.movie_poster_thumbnail);
 
         Intent movieIntent = getIntent();
-        Movie movie = null;
+        MovieOld movieOld = null;
 
         if (movieIntent.hasExtra(getString(R.string.movie_intent))) {
-            movie = movieIntent.getExtras().getParcelable(getString(R.string.movie_intent));
+            movieOld = movieIntent.getExtras().getParcelable(getString(R.string.movie_intent));
 
         }
 
 
         if (NetworkUtils.isNetworkConnectionAvailable(DetailsActivity.this)) {
-            if( movie!=null && movie.hasAllProperties()) {
+            if( movieOld !=null && movieOld.hasAllProperties()) {
 
-                Details details = new Details(movie.getOriginalTitle(),movie.getPosterPath(),
-                        movie.getVoteAverage(),movie.getReleaseDate(),movie.getOverview());
+                Details details = new Details(movieOld.getOriginalTitle(), movieOld.getPosterPath(),
+                        movieOld.getVoteAverage(), movieOld.getReleaseDate(), movieOld.getOverview());
 
                 Picasso.with(DetailsActivity.this).load(NetworkUtils
                         .buildPosterURL(details.getMoviePosterThumbnail()))

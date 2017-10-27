@@ -9,7 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.marst.android.popular.movies.data.Details;
 import com.marst.android.popular.movies.data.Movie;
+import com.marst.android.popular.movies.data.MovieOld;
 import com.marst.android.popular.movies.utils.NetworkUtils;
 import com.squareup.picasso.Picasso;
 
@@ -23,17 +25,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     private static final String TAG = MovieAdapter.class.getSimpleName();
 
-    public MovieAdapter(int mNumberItems, Context mContext, List<Movie> movieList) {
+    public MovieAdapter(int mNumberItems, Context mContext, List<Movie> movies) {
         this.mNumberItems = mNumberItems;
         this.mContext = mContext;
-        this.movieList = movieList;
-    }
-
-    /**
-     * The interface that receives onClick messages.
-     */
-    public interface ListItemClickListener {
-        void onListItemClick(int clickedItemIndex);
+        this.movieList = movies;
     }
 
     @Override
@@ -54,9 +49,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         Movie movie = getItem(position);
 
         if (NetworkUtils.isNetworkConnectionAvailable(mContext) && movie != null
-                && movie.getPosterPath() != null && !"".equals(movie.getPosterPath())) {
+                && movie.getPoster_path() != null && !"".equals(movie.getPoster_path())) {
             Picasso.with(mContext)
-                    .load(NetworkUtils.buildPosterURL(movie.getPosterPath()))
+                    .load(NetworkUtils.buildPosterURL(movie.getPoster_path()))
                     .placeholder(R.drawable.placeholder)
                     .error(R.drawable.error)
                     .into(holder.moviePoster);
@@ -83,11 +78,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         public void onClick(View v) {
             int clickedPosition = getAdapterPosition();
             final Movie movie = getItem(clickedPosition);
+            Details movieDetails = new Details(movie.getOriginal_title(),movie.getPoster_path(),
+                    Integer.toString(movie.getVote_count()),movie.getRelease_date(),movie.getOverview());
             Intent movieDetailsIntent = new Intent(mContext, DetailsActivity.class);
-            movieDetailsIntent.putExtra(mContext.getString(R.string.movie_intent), movie);
+            movieDetailsIntent.putExtra(mContext.getString(R.string.movie_intent), movieDetails);
             mContext.startActivity(movieDetailsIntent);
-//
-//            mOnClickListener.onListItemClick(clickedPosition);
         }
     }
 

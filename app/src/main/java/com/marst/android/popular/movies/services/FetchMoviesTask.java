@@ -5,24 +5,33 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
 import com.marst.android.popular.movies.R;
-import com.marst.android.popular.movies.data.Movie;
+import com.marst.android.popular.movies.data.MovieOld;
+import com.marst.android.popular.movies.data.MoviesResponse;
 import com.marst.android.popular.movies.utils.NetworkUtils;
 import com.marst.android.popular.movies.utils.TheMovieDBJsonUtils;
 
 import java.net.URL;
 
-@TargetApi(Build.VERSION_CODES.CUPCAKE)
-public class FetchMoviesTask extends AsyncTask<URL,Void,Movie[]> {
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-    private OnEventListener<Movie[]> mCallBack;
+import static android.content.ContentValues.TAG;
+import static com.marst.android.popular.movies.utils.NetworkUtils.isNetworkConnectionAvailable;
+
+@TargetApi(Build.VERSION_CODES.CUPCAKE)
+public class FetchMoviesTask extends AsyncTask<URL,Void,MovieOld[]> {
+
+    private OnEventListener<MovieOld[]> mCallBack;
     private Context mContext;
     public Exception mException;
 
-    public FetchMoviesTask(Context mContext, OnEventListener<Movie[]> mCallBack) {
+    public FetchMoviesTask(Context mContext, OnEventListener<MovieOld[]> mCallBack) {
         this.mCallBack = mCallBack;
         this.mContext = mContext;
     }
@@ -35,7 +44,7 @@ public class FetchMoviesTask extends AsyncTask<URL,Void,Movie[]> {
     }
 
     @Override
-    protected Movie[] doInBackground(URL... params) {
+    protected MovieOld[] doInBackground(URL... params) {
 
         if ( params.length == 0 ){
             return null;
@@ -44,7 +53,7 @@ public class FetchMoviesTask extends AsyncTask<URL,Void,Movie[]> {
 
         try {
             //If there i a network connection try to fetch data
-            if(NetworkUtils.isNetworkConnectionAvailable(mContext)) {
+            if(isNetworkConnectionAvailable(mContext)) {
                 String jsonString = NetworkUtils.getResponseFromHttpUrl(moviesUrl);
                 return TheMovieDBJsonUtils.getMoviesFromJson(jsonString,mContext);
             } else {
@@ -58,7 +67,7 @@ public class FetchMoviesTask extends AsyncTask<URL,Void,Movie[]> {
     }
 
     @Override
-    protected void onPostExecute(Movie[] movies) {
+    protected void onPostExecute(MovieOld[] movies) {
 
         if (mCallBack != null) {
             if (mException == null) {
@@ -66,6 +75,41 @@ public class FetchMoviesTask extends AsyncTask<URL,Void,Movie[]> {
             } else {
                 mCallBack.onFailure(mException);
             }
+        }
+    }
+
+    protected void FetchMovies(boolean isTopRated, Context context){
+
+        NetworkUtils.MovieApiInterface movieApiService =
+                            NetworkUtils.getClient().create(NetworkUtils.MovieApiInterface.class);
+
+        if(isNetworkConnectionAvailable(context)) {
+            Call<MoviesResponse> callTheMovieDB;
+            if(isTopRated) {
+                callTheMovieDB = movieApiService.getTopRatedMovies(NetworkUtils.getApiKey());
+            } else {
+                callTheMovieDB = movieApiService.getPopularMovies(NetworkUtils.getApiKey());
+            }
+            callTheMovieDB.enqueue(new Callback<MoviesResponse>() {
+                @Override
+                public void onResponse(Call<MoviesResponse> call, Response<MoviesResponse> response) {
+                    if (mCallBack != null) {
+
+                            mCallBack.onSuccess(response.body().getResults());
+
+                    }
+                    response.body().getResults();
+                    Log.d(TAG,"" + movies.size());
+                }
+
+                @Override
+                public void onFailure(Call<MoviesResponse> call, Throwable t) {
+                    Log.e(TAG,t.getMessage());
+                    mCallBack.onFailure(new Exception(t));
+                }
+            });
+        } else  {
+
         }
     }
 }
