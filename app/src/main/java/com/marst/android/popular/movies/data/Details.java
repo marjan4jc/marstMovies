@@ -26,6 +26,15 @@ public class Details implements Parcelable {
         plotSynopsis = in.readString();
     }
 
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(movieTitle);
+        dest.writeString(moviePosterThumbnail);
+        dest.writeString(movieUserRating);
+        dest.writeString(movieReleaseDate);
+        dest.writeString(plotSynopsis);
+    }
+
     public static final Creator<Details> CREATOR = new Creator<Details>() {
         @Override
         public Details createFromParcel(Parcel in) {
@@ -63,11 +72,12 @@ public class Details implements Parcelable {
         return 0;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(plotSynopsis);
-        dest.writeString(movieUserRating);
-        dest.writeString(movieReleaseDate);
-        dest.writeString(movieTitle);
+    public boolean hasAllProperties(){
+        return getMoviePosterThumbnail() != null && !"".equals(getMoviePosterThumbnail())
+                && getMovieTitle() != null && !"".equals(getMovieTitle())
+                && getPlotSynopsis() != null && !"".equals(getPlotSynopsis())
+                && getMovieReleaseDate() != null && !"".equals(getMovieReleaseDate())
+                && getMovieUserRating() != null && !"".equals(getMovieUserRating());
     }
+
 }

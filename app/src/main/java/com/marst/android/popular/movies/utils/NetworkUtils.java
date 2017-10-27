@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.marst.android.popular.movies.BuildConfig;
-import com.marst.android.popular.movies.MainActivity;
 import com.marst.android.popular.movies.R;
 import com.marst.android.popular.movies.data.Movie;
 import com.marst.android.popular.movies.data.MoviesResponse;
@@ -22,8 +21,6 @@ import java.util.List;
 import java.util.Scanner;
 
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
@@ -166,35 +163,6 @@ public final class NetworkUtils {
                         .getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnected();
-    }
-
-
-    public static List<Movie> getMovies(boolean isTopRated, Context context) {
-        MovieApiInterface movieApiService = getClient().create(MovieApiInterface.class);
-
-        if(isNetworkConnectionAvailable(context)) {
-            Call<MoviesResponse> callTheMovieDB;
-            if(isTopRated) {
-                callTheMovieDB = movieApiService.getTopRatedMovies(getApiKey());
-            } else {
-                callTheMovieDB = movieApiService.getPopularMovies(getApiKey());
-            }
-            callTheMovieDB.enqueue(new Callback<MoviesResponse>() {
-                @Override
-                public void onResponse(Call<MoviesResponse> call, Response<MoviesResponse> response) {
-                    movies = response.body().getResults();
-                    Log.d(TAG,"" + movies.size());
-                }
-
-                @Override
-                public void onFailure(Call<MoviesResponse> call, Throwable t) {
-                    Log.e(TAG,t.getMessage());
-                }
-            });
-        } else  {
-
-        }
-        return movies;
     }
 
 

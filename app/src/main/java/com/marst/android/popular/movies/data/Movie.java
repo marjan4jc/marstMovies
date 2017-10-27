@@ -35,7 +35,10 @@ public class Movie {
     @SerializedName("genre_ids")
     private List<Integer> genre_ids;
 
-    public Movie(int vote_count, int id, boolean video, double vote_average, String title, double popularity, String poster_path, String original_language, String original_title, String backdrop_path, boolean adult, String overview, String release_date, List<Integer> genre_ids) {
+    public Movie(int vote_count, int id, boolean video, double vote_average, String title,
+                 double popularity, String poster_path, String original_language,
+                 String original_title, String backdrop_path, boolean adult, String overview,
+                 String release_date, List<Integer> genre_ids) {
         this.vote_count = vote_count;
         this.id = id;
         this.video = video;

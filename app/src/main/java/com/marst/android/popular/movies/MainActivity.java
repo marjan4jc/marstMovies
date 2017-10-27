@@ -11,14 +11,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.marst.android.popular.movies.data.Movie;
-import com.marst.android.popular.movies.data.MovieOld;
 import com.marst.android.popular.movies.services.FetchMoviesTask;
 import com.marst.android.popular.movies.services.OnEventListener;
 import com.marst.android.popular.movies.utils.MenuHelper;
-import com.marst.android.popular.movies.utils.NetworkUtils;
 
-import java.net.URL;
-import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -55,17 +51,8 @@ public class MainActivity extends AppCompatActivity {
      *                    anf most popular otherwise.
      */
     private void loadMovieData(boolean isTopRated) {
-        URL url;
-        if(!isTopRated) {
-            url = NetworkUtils.buildPopularMoviesURL(MainActivity.this);
-        } else {
-            url = NetworkUtils.buildTopRatedMoviesURL(MainActivity.this);
-        }
 
-
-
-
-        FetchMoviesTask fetchMoviesTask = new FetchMoviesTask(MainActivity.this, new OnEventListener<List<Movie>>(){
+        new FetchMoviesTask(MainActivity.this,isTopRated, new OnEventListener<List<Movie>>(){
 
             @Override
             public void onSuccess(List<Movie> movies) {
@@ -86,17 +73,21 @@ public class MainActivity extends AppCompatActivity {
                     mRecyclerView.setAdapter(movieAdapter);
 
                 } else {
-                    showErrorMsg();
+                    showErrorMsg(getString(R.string.no_connection));
                 }
-
             }
 
             @Override
             public void onFailure(Exception e) {
-                showErrorMsg();
+                showErrorMsg(getString(R.string.error_occurred));
             }
+
+            @Override
+            public void onSuccessNoMovies() {
+                showErrorMsg(getString(R.string.no_movies_returned));
+            }
+
         });
-        fetchMoviesTask.execute(url);
     }
 
     @Override
@@ -138,7 +129,9 @@ public class MainActivity extends AppCompatActivity {
      * This method will make the error message visible and hide the
      * movies grid.
      */
-    private void showErrorMsg() {
+    private void showErrorMsg(String errMsg) {
+
+        mMoviesErrorTextView.setText(errMsg);
 
         mRecyclerView.setVisibility(View.INVISIBLE);
 

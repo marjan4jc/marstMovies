@@ -9,14 +9,11 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.marst.android.popular.movies.data.Details;
-import com.marst.android.popular.movies.data.MovieOld;
 import com.marst.android.popular.movies.databinding.ActivityDetailsBinding;
 import com.marst.android.popular.movies.utils.NetworkUtils;
 import com.squareup.picasso.Picasso;
 
 public class DetailsActivity extends AppCompatActivity {
-
-    private ImageView mMoviePosterThumbnail;
 
     private static final String TAG = DetailsActivity.class.getSimpleName();
 
@@ -28,22 +25,22 @@ public class DetailsActivity extends AppCompatActivity {
         ActivityDetailsBinding binding = DataBindingUtil.setContentView(this,R.layout.activity_details);
 
 
-        mMoviePosterThumbnail = (ImageView) findViewById(R.id.movie_poster_thumbnail);
+        ImageView mMoviePosterThumbnail = (ImageView) findViewById(R.id.movie_poster_thumbnail);
 
         Intent movieIntent = getIntent();
-        MovieOld movieOld = null;
+        Details details = null;
 
         if (movieIntent.hasExtra(getString(R.string.movie_intent))) {
-            movieOld = movieIntent.getExtras().getParcelable(getString(R.string.movie_intent));
+            details = movieIntent.getExtras().getParcelable(getString(R.string.movie_intent));
 
         }
 
 
         if (NetworkUtils.isNetworkConnectionAvailable(DetailsActivity.this)) {
-            if( movieOld !=null && movieOld.hasAllProperties()) {
+            if( details !=null && details.hasAllProperties()) {
 
-                Details details = new Details(movieOld.getOriginalTitle(), movieOld.getPosterPath(),
-                        movieOld.getVoteAverage(), movieOld.getReleaseDate(), movieOld.getOverview());
+                details = new Details(details.getMovieTitle(), details.getMoviePosterThumbnail(),
+                        details.getMovieUserRating(), details.getMovieReleaseDate(), details.getPlotSynopsis());
 
                 Picasso.with(DetailsActivity.this).load(NetworkUtils
                         .buildPosterURL(details.getMoviePosterThumbnail()))

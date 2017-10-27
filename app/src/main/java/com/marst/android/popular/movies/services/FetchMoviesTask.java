@@ -3,88 +3,48 @@ package com.marst.android.popular.movies.services;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
 import com.marst.android.popular.movies.R;
-import com.marst.android.popular.movies.data.MovieOld;
+import com.marst.android.popular.movies.data.Movie;
 import com.marst.android.popular.movies.data.MoviesResponse;
 import com.marst.android.popular.movies.utils.NetworkUtils;
-import com.marst.android.popular.movies.utils.TheMovieDBJsonUtils;
 
-import java.net.URL;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static android.content.ContentValues.TAG;
 import static com.marst.android.popular.movies.utils.NetworkUtils.isNetworkConnectionAvailable;
 
 @TargetApi(Build.VERSION_CODES.CUPCAKE)
-public class FetchMoviesTask extends AsyncTask<URL,Void,MovieOld[]> {
+public class FetchMoviesTask  {
 
-    private OnEventListener<MovieOld[]> mCallBack;
-    private Context mContext;
-    public Exception mException;
+    private final OnEventListener<List<Movie>> mCallBack;
+    private final Context mContext;
+    private final String TAG = FetchMoviesTask.class.getSimpleName();
 
-    public FetchMoviesTask(Context mContext, OnEventListener<MovieOld[]> mCallBack) {
+    public FetchMoviesTask(Context mContext,boolean isTopRated, OnEventListener<List<Movie>> mCallBack) {
         this.mCallBack = mCallBack;
         this.mContext = mContext;
+        fetchMovies(isTopRated);
     }
 
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-        ProgressBar progressBarIndicator = ((Activity)mContext).findViewById(R.id.pb_loading_indicator);
-        progressBarIndicator.setVisibility(View.VISIBLE);
-    }
 
-    @Override
-    protected MovieOld[] doInBackground(URL... params) {
-
-        if ( params.length == 0 ){
-            return null;
-        }
-        URL moviesUrl = params[0];
-
-        try {
-            //If there i a network connection try to fetch data
-            if(isNetworkConnectionAvailable(mContext)) {
-                String jsonString = NetworkUtils.getResponseFromHttpUrl(moviesUrl);
-                return TheMovieDBJsonUtils.getMoviesFromJson(jsonString,mContext);
-            } else {
-                return null;
-            }
-        } catch (Exception e) {
-            mException = e;
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    @Override
-    protected void onPostExecute(MovieOld[] movies) {
-
-        if (mCallBack != null) {
-            if (mException == null) {
-                mCallBack.onSuccess(movies);
-            } else {
-                mCallBack.onFailure(mException);
-            }
-        }
-    }
-
-    protected void FetchMovies(boolean isTopRated, Context context){
+    private void fetchMovies(boolean isTopRated) {
 
         NetworkUtils.MovieApiInterface movieApiService =
                             NetworkUtils.getClient().create(NetworkUtils.MovieApiInterface.class);
 
-        if(isNetworkConnectionAvailable(context)) {
+        if(isNetworkConnectionAvailable(mContext)) {
             Call<MoviesResponse> callTheMovieDB;
+            ProgressBar progressBarIndicator = ((Activity)mContext).findViewById(R.id.pb_loading_indicator);
+            progressBarIndicator.setVisibility(View.VISIBLE);
             if(isTopRated) {
                 callTheMovieDB = movieApiService.getTopRatedMovies(NetworkUtils.getApiKey());
             } else {
@@ -92,24 +52,31 @@ public class FetchMoviesTask extends AsyncTask<URL,Void,MovieOld[]> {
             }
             callTheMovieDB.enqueue(new Callback<MoviesResponse>() {
                 @Override
-                public void onResponse(Call<MoviesResponse> call, Response<MoviesResponse> response) {
+                public void onResponse(@NonNull Call<MoviesResponse> call, @NonNull Response<MoviesResponse> response) {
                     if (mCallBack != null) {
+                        List<Movie> movies;
 
-                            mCallBack.onSuccess(response.body().getResults());
+                        if(response.body().getResults()!=null) {
+                            movies = response.body().getResults();
+                            if (movies!=null) {
+                                Log.d(TAG, mContext.getString(R.string.number_movies) + movies.size());
+                                mCallBack.onSuccess(movies);
+                            } else {
+                                Log.d(TAG,mContext.getString(R.string.no_movies_returned));
+                                mCallBack.onSuccessNoMovies();
+                            }
+                        }
 
                     }
-                    response.body().getResults();
-                    Log.d(TAG,"" + movies.size());
                 }
-
                 @Override
-                public void onFailure(Call<MoviesResponse> call, Throwable t) {
+                public void onFailure(@NonNull Call<MoviesResponse> call, @NonNull Throwable t) {
                     Log.e(TAG,t.getMessage());
                     mCallBack.onFailure(new Exception(t));
                 }
             });
         } else  {
-
+            mCallBack.onSuccess(null);
         }
     }
 }
