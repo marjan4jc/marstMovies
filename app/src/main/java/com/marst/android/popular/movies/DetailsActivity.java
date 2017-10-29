@@ -9,14 +9,11 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.marst.android.popular.movies.data.Details;
-import com.marst.android.popular.movies.data.Movie;
 import com.marst.android.popular.movies.databinding.ActivityDetailsBinding;
 import com.marst.android.popular.movies.utils.NetworkUtils;
 import com.squareup.picasso.Picasso;
 
 public class DetailsActivity extends AppCompatActivity {
-
-    private ImageView mMoviePosterThumbnail;
 
     private static final String TAG = DetailsActivity.class.getSimpleName();
 
@@ -28,22 +25,22 @@ public class DetailsActivity extends AppCompatActivity {
         ActivityDetailsBinding binding = DataBindingUtil.setContentView(this,R.layout.activity_details);
 
 
-        mMoviePosterThumbnail = (ImageView) findViewById(R.id.movie_poster_thumbnail);
+        ImageView mMoviePosterThumbnail = (ImageView) findViewById(R.id.movie_poster_thumbnail);
 
         Intent movieIntent = getIntent();
-        Movie movie = null;
+        Details details = null;
 
         if (movieIntent.hasExtra(getString(R.string.movie_intent))) {
-            movie = movieIntent.getExtras().getParcelable(getString(R.string.movie_intent));
+            details = movieIntent.getExtras().getParcelable(getString(R.string.movie_intent));
 
         }
 
 
         if (NetworkUtils.isNetworkConnectionAvailable(DetailsActivity.this)) {
-            if( movie!=null && movie.hasAllProperties()) {
+            if( details !=null && details.hasAllProperties()) {
 
-                Details details = new Details(movie.getOriginalTitle(),movie.getPosterPath(),
-                        movie.getVoteAverage(),movie.getReleaseDate(),movie.getOverview());
+                details = new Details(details.getMovieTitle(), details.getMoviePosterThumbnail(),
+                        details.getMovieUserRating(), details.getMovieReleaseDate(), details.getPlotSynopsis());
 
                 Picasso.with(DetailsActivity.this).load(NetworkUtils
                         .buildPosterURL(details.getMoviePosterThumbnail()))

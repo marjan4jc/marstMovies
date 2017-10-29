@@ -1,7 +1,6 @@
 package com.marst.android.popular.movies;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,23 +16,22 @@ import java.util.List;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
-    private int mNumberItems;
-    private Context mContext;
-    private List<Movie> movieList;
+    private final int mNumberItems;
+    private final Context mContext;
+    private final List<Movie> movieList;
+    private final GridItemClickListener mGridItemListener;
 
     private static final String TAG = MovieAdapter.class.getSimpleName();
 
-    public MovieAdapter(int mNumberItems, Context mContext, List<Movie> movieList) {
+    public MovieAdapter(int mNumberItems, Context mContext, List<Movie> movies, GridItemClickListener mGtidItemListener) {
         this.mNumberItems = mNumberItems;
         this.mContext = mContext;
-        this.movieList = movieList;
+        this.movieList = movies;
+        this.mGridItemListener = mGtidItemListener;
     }
 
-    /**
-     * The interface that receives onClick messages.
-     */
-    public interface ListItemClickListener {
-        void onListItemClick(int clickedItemIndex);
+    public interface GridItemClickListener{
+        void onGridItemClick(Movie movie);
     }
 
     @Override
@@ -54,9 +52,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         Movie movie = getItem(position);
 
         if (NetworkUtils.isNetworkConnectionAvailable(mContext) && movie != null
-                && movie.getPosterPath() != null && !"".equals(movie.getPosterPath())) {
+                && movie.getPoster_path() != null && !"".equals(movie.getPoster_path())) {
             Picasso.with(mContext)
-                    .load(NetworkUtils.buildPosterURL(movie.getPosterPath()))
+                    .load(NetworkUtils.buildPosterURL(movie.getPoster_path()))
                     .placeholder(R.drawable.placeholder)
                     .error(R.drawable.error)
                     .into(holder.moviePoster);
@@ -71,7 +69,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     }
 
     class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private ImageView moviePoster;
+        private final ImageView moviePoster;
 
         public MovieViewHolder(View itemView) {
             super(itemView);
@@ -83,11 +81,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         public void onClick(View v) {
             int clickedPosition = getAdapterPosition();
             final Movie movie = getItem(clickedPosition);
-            Intent movieDetailsIntent = new Intent(mContext, DetailsActivity.class);
-            movieDetailsIntent.putExtra(mContext.getString(R.string.movie_intent), movie);
-            mContext.startActivity(movieDetailsIntent);
-//
-//            mOnClickListener.onListItemClick(clickedPosition);
+            mGridItemListener.onGridItemClick(movie);
+
         }
     }
 

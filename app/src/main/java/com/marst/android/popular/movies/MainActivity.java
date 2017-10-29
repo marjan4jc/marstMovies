@@ -8,22 +8,18 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.marst.android.popular.movies.data.Details;
 import com.marst.android.popular.movies.data.Movie;
 import com.marst.android.popular.movies.services.FetchMoviesTask;
 import com.marst.android.popular.movies.services.OnEventListener;
 import com.marst.android.popular.movies.utils.MenuHelper;
-import com.marst.android.popular.movies.utils.NetworkUtils;
 
-import java.net.URL;
-import java.util.Arrays;
+import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
-
-    private GridView mMoviesGridView;
+public class MainActivity extends AppCompatActivity  implements MovieAdapter.GridItemClickListener{
 
     private GridLayoutManager mGridLayoutManager;
 
@@ -41,8 +37,6 @@ public class MainActivity extends AppCompatActivity {
 
         mRecyclerView = (RecyclerView) findViewById(R.id.movies_grid);
 
-//        mMoviesGridView = (GridView) findViewById(R.id.movies_grid);
-
         mMoviesErrorTextView = (TextView) findViewById(R.id.movies_error_message_display);
 
         mProgressBarrIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
@@ -59,45 +53,44 @@ public class MainActivity extends AppCompatActivity {
      *                    anf most popular otherwise.
      */
     private void loadMovieData(boolean isTopRated) {
-        URL url;
-        if(!isTopRated) {
-            url = NetworkUtils.buildPopularMoviesURL(MainActivity.this);
-        } else {
-            url = NetworkUtils.buildTopRatedMoviesURL(MainActivity.this);
-        }
 
-        FetchMoviesTask fetchMoviesTask = new FetchMoviesTask(MainActivity.this, new OnEventListener<Movie[]>(){
+        new FetchMoviesTask(MainActivity.this,isTopRated, new OnEventListener<List<Movie>>(){
 
             @Override
-            public void onSuccess(Movie[] movies) {
+            public void onSuccess(List<Movie> movies) {
                 mProgressBarrIndicator.setVisibility(View.INVISIBLE);
                 if(movies!=null) {
                     showMoviesGridView();
 
                     mGridLayoutManager = new GridLayoutManager(MainActivity.this,2);
 
-                    //Always returns 20 items
+                    //Always returns 20 items per page.
                     mRecyclerView.setHasFixedSize(true);
 
                     mRecyclerView.setLayoutManager(mGridLayoutManager);
 
                     MovieAdapter movieAdapter = new
-                            MovieAdapter(movies.length, MainActivity.this, Arrays.asList(movies));
+                            MovieAdapter(movies.size(), MainActivity.this,
+                            movies, MainActivity.this);
 
                     mRecyclerView.setAdapter(movieAdapter);
 
                 } else {
-                    showErrorMsg();
+                    showErrorMsg(getString(R.string.no_connection));
                 }
-
             }
 
             @Override
             public void onFailure(Exception e) {
-                showErrorMsg();
+                showErrorMsg(getString(R.string.error_occurred));
             }
+
+            @Override
+            public void onSuccessNoMovies() {
+                showErrorMsg(getString(R.string.no_movies_returned));
+            }
+
         });
-        fetchMoviesTask.execute(url);
     }
 
     @Override
@@ -139,18 +132,21 @@ public class MainActivity extends AppCompatActivity {
      * This method will make the error message visible and hide the
      * movies grid.
      */
-    private void showErrorMsg() {
+    private void showErrorMsg(String errMsg) {
+
+        mMoviesErrorTextView.setText(errMsg);
 
         mRecyclerView.setVisibility(View.INVISIBLE);
 
         mMoviesErrorTextView.setVisibility(View.VISIBLE);
     }
-//
-//    @Override
-//    public void onListItemClick(int clickedItemIndex) {
-//        Intent movieDetailsIntent = new Intent(MainActivity.this, DetailsActivity.class);
-//        movieDetailsIntent.putExtra(getString(R.string.movie_intent), movie);
-//        startActivity(movieDetailsIntent);
-//
-//    }
+
+    @Override
+    public void onGridItemClick(Movie movie) {
+        Details movieDetails = new Details(movie.getTitle(),movie.getPoster_path(),
+                Double.toString(movie.getVote_average()),movie.getRelease_date(),movie.getOverview());
+        Intent movieDetailsIntent = new Intent(MainActivity.this, DetailsActivity.class);
+        movieDetailsIntent.putExtra(getString(R.string.movie_intent), movieDetails);
+        startActivity(movieDetailsIntent);
+    }
 }

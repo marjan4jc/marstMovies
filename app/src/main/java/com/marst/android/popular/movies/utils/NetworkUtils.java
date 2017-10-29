@@ -9,13 +9,22 @@ import android.util.Log;
 
 import com.marst.android.popular.movies.BuildConfig;
 import com.marst.android.popular.movies.R;
+import com.marst.android.popular.movies.data.Movie;
+import com.marst.android.popular.movies.data.MoviesResponse;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 import java.util.Scanner;
+
+import retrofit2.Call;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.GET;
+import retrofit2.http.Query;
 
 public final class NetworkUtils {
 
@@ -23,14 +32,23 @@ public final class NetworkUtils {
 
     private static final String POSTER_BASE_URL="http://image.tmdb.org/t/p/";
 
+    private static final String MOVIES_BASE_URL = "http://api.themoviedb.org/3/";
+
+    private static final String POPULAR_MOVIES= "movie/popular";
+
+    private static final String TOP_RATED_MOVIES= "movie/top_rated";
+
     private static final String POPULAR_MOVIES_URL="http://api.themoviedb.org/3/movie/popular";
 
     private static final String TOP_RATED_MOVIES_URL="http://api.themoviedb.org/3/movie/top_rated";
 
     private static final String KEY_PARAM="api_key";
 
+    private static Retrofit retrofitClient;
 
-    /*
+    private static List<Movie> movies = null;
+
+     /*
         Phone size
      */
     private static final String W_92 = "w92";
@@ -46,7 +64,7 @@ public final class NetworkUtils {
     /**
      * Retrieves the api.key from a local.properties file
      */
-    private static final String getApiKey(){
+    public static final String getApiKey(){
         return BuildConfig.KEY;
     }
 
@@ -145,5 +163,26 @@ public final class NetworkUtils {
                         .getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnected();
+    }
+
+
+    public static Retrofit getClient() {
+        if (retrofitClient==null) {
+            retrofitClient = new Retrofit.Builder()
+                    .baseUrl(MOVIES_BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+        }
+        return retrofitClient;
+    }
+
+    public interface MovieApiInterface {
+
+        @GET(TOP_RATED_MOVIES)
+        Call<MoviesResponse> getTopRatedMovies(@Query(KEY_PARAM) String apiKey);
+
+        @GET(POPULAR_MOVIES)
+        Call<MoviesResponse> getPopularMovies(@Query(KEY_PARAM) String apiKey);
+
     }
 }

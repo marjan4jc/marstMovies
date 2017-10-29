@@ -9,11 +9,12 @@
 
     <string name="details_activity">Movie Details</string>
 
-    <string name="movie_intent">movie</string>
+    <string name="movie_intent">details</string>
     <string name="no_details_data">Details Data is missing</string>
+    <string name="number_movies">Number of Movies :</string>
+    <string name="no_movies_returned">No Movies Returned!</string>
+    <string name="error_occurred">Error Occurred!</string>
     <string name="no_connection">Network Connection not available!</string>
-    <string name="err_code">Error code: </string>
-    <string name="status_msg">, status message: </string>
     <string name="malformed_url">Malformed URL</string>
     <string name="built_uri">Built URI </string>
     <string name="no_url_response">No Response from URL: </string>
