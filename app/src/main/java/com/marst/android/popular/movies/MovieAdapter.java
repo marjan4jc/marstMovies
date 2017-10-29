@@ -1,7 +1,6 @@
 package com.marst.android.popular.movies;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.marst.android.popular.movies.data.Details;
 import com.marst.android.popular.movies.data.Movie;
 import com.marst.android.popular.movies.utils.NetworkUtils;
 import com.squareup.picasso.Picasso;
@@ -21,13 +19,19 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     private final int mNumberItems;
     private final Context mContext;
     private final List<Movie> movieList;
+    private final GridItemClickListener mGridItemListener;
 
     private static final String TAG = MovieAdapter.class.getSimpleName();
 
-    public MovieAdapter(int mNumberItems, Context mContext, List<Movie> movies) {
+    public MovieAdapter(int mNumberItems, Context mContext, List<Movie> movies, GridItemClickListener mGtidItemListener) {
         this.mNumberItems = mNumberItems;
         this.mContext = mContext;
         this.movieList = movies;
+        this.mGridItemListener = mGtidItemListener;
+    }
+
+    public interface GridItemClickListener{
+        void onGridItemClick(Movie movie);
     }
 
     @Override
@@ -77,11 +81,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         public void onClick(View v) {
             int clickedPosition = getAdapterPosition();
             final Movie movie = getItem(clickedPosition);
-            Details movieDetails = new Details(movie.getTitle(),movie.getPoster_path(),
-                    Double.toString(movie.getVote_average()),movie.getRelease_date(),movie.getOverview());
-            Intent movieDetailsIntent = new Intent(mContext, DetailsActivity.class);
-            movieDetailsIntent.putExtra(mContext.getString(R.string.movie_intent), movieDetails);
-            mContext.startActivity(movieDetailsIntent);
+            mGridItemListener.onGridItemClick(movie);
+
         }
     }
 

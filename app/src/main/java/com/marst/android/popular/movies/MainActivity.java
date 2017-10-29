@@ -1,5 +1,6 @@
 package com.marst.android.popular.movies;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.marst.android.popular.movies.data.Details;
 import com.marst.android.popular.movies.data.Movie;
 import com.marst.android.popular.movies.services.FetchMoviesTask;
 import com.marst.android.popular.movies.services.OnEventListener;
@@ -17,7 +19,7 @@ import com.marst.android.popular.movies.utils.MenuHelper;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity  implements MovieAdapter.GridItemClickListener{
 
     private GridLayoutManager mGridLayoutManager;
 
@@ -68,7 +70,8 @@ public class MainActivity extends AppCompatActivity {
                     mRecyclerView.setLayoutManager(mGridLayoutManager);
 
                     MovieAdapter movieAdapter = new
-                            MovieAdapter(movies.size(), MainActivity.this, movies);
+                            MovieAdapter(movies.size(), MainActivity.this,
+                            movies, MainActivity.this);
 
                     mRecyclerView.setAdapter(movieAdapter);
 
@@ -136,5 +139,14 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setVisibility(View.INVISIBLE);
 
         mMoviesErrorTextView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onGridItemClick(Movie movie) {
+        Details movieDetails = new Details(movie.getTitle(),movie.getPoster_path(),
+                Double.toString(movie.getVote_average()),movie.getRelease_date(),movie.getOverview());
+        Intent movieDetailsIntent = new Intent(MainActivity.this, DetailsActivity.class);
+        movieDetailsIntent.putExtra(getString(R.string.movie_intent), movieDetails);
+        startActivity(movieDetailsIntent);
     }
 }
