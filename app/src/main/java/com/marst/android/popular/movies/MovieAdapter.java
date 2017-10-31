@@ -30,10 +30,22 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         this.mGridItemListener = mGtidItemListener;
     }
 
+    /**
+     * The interface that recives onClick messages
+     */
     public interface GridItemClickListener{
         void onGridItemClick(Movie movie);
     }
 
+    /**
+     * This method get called when a new ViewHolder is created. When the RecyclerView is laid out,
+     * there will be created enough ViewHolders to fill the screen and allow fro scroling
+     * @param parent The ViewGroup that these ViewHolders are contained within
+     * @param viewType If the RecyclerView has more than one type of item, the viewType int is used
+     *                 to provide a different layout.(This Project till now doesn't have more then
+     *                 one type.)
+     * @return A new MovieViewHolder that holds the View for each grid item.
+     */
     @Override
     public MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
@@ -46,6 +58,16 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         return movieViewHolder;
     }
 
+
+    /**
+     * This method is called by the RecyclerView to display the data at the specified
+     * position. The contents of the ViewHolder is updated in this method, using the position
+     * argument.
+     *
+     * @param holder The ViewHolder which should be updated to represent the contents of the
+     *                 item at the given position in the data set.
+     * @param position The position of the item within the adapter's data list.
+     */
     @Override
     public void onBindViewHolder(MovieViewHolder holder, int position) {
 
@@ -63,11 +85,20 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         }
     }
 
+    /**
+     * Returns the number of items to display.
+     *
+     * @return The number of items available.
+     */
     @Override
     public int getItemCount() {
         return mNumberItems;
     }
 
+
+    /**
+     * Cache of the children views for a grid item.
+     */
     class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final ImageView moviePoster;
 
@@ -77,6 +108,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             itemView.setOnClickListener(this);
         }
 
+        /**
+         * Whenever a user clicks on an item in the grid this method is called.
+         * @param v The View that was clicked.
+         */
         @Override
         public void onClick(View v) {
             int clickedPosition = getAdapterPosition();

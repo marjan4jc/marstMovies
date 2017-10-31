@@ -141,6 +141,11 @@ public class MainActivity extends AppCompatActivity  implements MovieAdapter.Gri
         mMoviesErrorTextView.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * This method handles the click event, creating a new Details object
+     * and starts a new Details Activity passing an intent that contains extra Details data in it.
+     * @param movie The movie is used to get needed data for creating the Details object.
+     */
     @Override
     public void onGridItemClick(Movie movie) {
         Details movieDetails = new Details(movie.getTitle(),movie.getPoster_path(),

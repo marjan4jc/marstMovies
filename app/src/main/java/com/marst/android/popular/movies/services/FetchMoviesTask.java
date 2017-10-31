@@ -12,6 +12,7 @@ import android.widget.ProgressBar;
 import com.marst.android.popular.movies.R;
 import com.marst.android.popular.movies.data.Movie;
 import com.marst.android.popular.movies.data.MoviesResponse;
+import com.marst.android.popular.movies.utils.MovieApiInterface;
 import com.marst.android.popular.movies.utils.NetworkUtils;
 
 import java.util.List;
@@ -35,11 +36,14 @@ public class FetchMoviesTask  {
         fetchMovies(isTopRated);
     }
 
-
+    /**
+     *
+     * @param isTopRated
+     */
     private void fetchMovies(boolean isTopRated) {
 
-        NetworkUtils.MovieApiInterface movieApiService =
-                            NetworkUtils.getClient().create(NetworkUtils.MovieApiInterface.class);
+        MovieApiInterface movieApiService =
+                            NetworkUtils.getClient().create(MovieApiInterface.class);
 
         if(isNetworkConnectionAvailable(mContext)) {
             Call<MoviesResponse> callTheMovieDB;
