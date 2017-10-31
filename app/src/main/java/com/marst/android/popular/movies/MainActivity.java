@@ -82,11 +82,13 @@ public class MainActivity extends AppCompatActivity  implements MovieAdapter.Gri
 
             @Override
             public void onFailure(Exception e) {
+                mProgressBarrIndicator.setVisibility(View.INVISIBLE);
                 showErrorMsg(getString(R.string.error_occurred));
             }
 
             @Override
             public void onSuccessNoMovies() {
+                mProgressBarrIndicator.setVisibility(View.INVISIBLE);
                 showErrorMsg(getString(R.string.no_movies_returned));
             }
 
