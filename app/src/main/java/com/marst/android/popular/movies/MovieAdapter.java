@@ -73,13 +73,17 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
         Movie movie = getItem(position);
 
-        if (NetworkUtils.isNetworkConnectionAvailable(mContext) && movie != null
-                && movie.getPoster_path() != null && !"".equals(movie.getPoster_path())) {
-            Picasso.with(mContext)
-                    .load(NetworkUtils.buildPosterURL(movie.getPoster_path()))
-                    .placeholder(R.drawable.placeholder)
-                    .error(R.drawable.error)
-                    .into(holder.moviePoster);
+        if (NetworkUtils.isNetworkConnectionAvailable(mContext)) {
+            if( movie != null && movie.getPosterPath() != null
+                    && !"".equals(movie.getPosterPath())) {
+                Picasso.with(mContext)
+                        .load(NetworkUtils.buildPosterURL(movie.getPosterPath()))
+                        .placeholder(R.drawable.placeholder)
+                        .error(R.drawable.error)
+                        .into(holder.moviePoster);
+            } else {
+                Log.d(TAG, mContext.getString(R.string.movie_missing_data));
+            }
         } else {
             Log.d(TAG, mContext.getString(R.string.no_connection));
         }

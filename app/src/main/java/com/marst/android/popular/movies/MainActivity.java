@@ -150,8 +150,8 @@ public class MainActivity extends AppCompatActivity  implements MovieAdapter.Gri
      */
     @Override
     public void onGridItemClick(Movie movie) {
-        Details movieDetails = new Details(movie.getTitle(),movie.getPoster_path(),
-                Double.toString(movie.getVote_average()),movie.getRelease_date(),movie.getOverview());
+        Details movieDetails = new Details(movie.getTitle(),movie.getPosterPath(),
+                Double.toString(movie.getVoteAverage()),movie.getReleaseDate(),movie.getOverview());
         Intent movieDetailsIntent = new Intent(MainActivity.this, DetailsActivity.class);
         movieDetailsIntent.putExtra(getString(R.string.movie_intent), movieDetails);
         startActivity(movieDetailsIntent);

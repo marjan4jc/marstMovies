@@ -8,78 +8,74 @@
             name="details"
             type="com.marst.android.popular.movies.data.Details"/>
     </data>
-
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:id="@+id/movie_title"
-        style="@style/TextAppearance.AppCompat.Display2"
-        android:background="@color/material500Green"
-        android:textColor="@color/white"
-        android:fontFamily="monospace"
-        android:gravity="center_vertical|start"
-        android:paddingLeft="16dp"
-        android:paddingStart="16dp"
-        android:text="@{details.movieTitle}"/>
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="220dp"
-                        android:layout_height="300dp"
-                        android:id="@+id/movie_poster_thumbnail"
-                        android:paddingEnd="16dp"
-                        android:paddingRight="16dp"
-                        android:paddingBottom="16dp"
-                        android:paddingTop="16dp"
-                        />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical">
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:id="@+id/release_date"
-                                android:paddingTop="16dp"
-                                android:paddingBottom="16dp"
-                                android:text="@{details.movieReleaseDate}"
-                                />
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:id="@+id/user_rating"
-                                android:paddingTop="16dp"
-                                android:text="@{details.movieUserRating}"
-                                />
-                        </LinearLayout>
-                </LinearLayout>
-
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/plot_synopsis"
-                    android:paddingTop="16dp"
-                    style="@style/TextAppearance.AppCompat.Notification.Title.Media"
-                    android:text="@{details.plotSynopsis}"
-                    />
+                    android:layout_height="250dp"
+                    android:id="@+id/movie_title"
+                    style="@style/TextAppearance.AppCompat.Display2"
+                    android:background="@color/material500Green"
+                    android:textColor="@color/white"
+                    android:fontFamily="monospace"
+                    android:gravity="center_vertical|start"
+                    android:paddingLeft="16dp"
+                    android:paddingStart="16dp"
+                    android:text="@{details.movieTitle}"/>
+
+
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <ImageView
+                                    android:layout_width="220dp"
+                                    android:layout_height="300dp"
+                                    android:id="@+id/movie_poster_thumbnail"
+                                    android:paddingEnd="16dp"
+                                    android:paddingRight="16dp"
+                                    android:paddingBottom="16dp"
+                                    android:paddingTop="16dp"
+                                    />
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:orientation="vertical">
+                                        <TextView
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:id="@+id/releaseDate"
+                                            android:paddingTop="16dp"
+                                            android:paddingBottom="16dp"
+                                            android:text="@{details.movieReleaseDate}"
+                                            />
+                                        <TextView
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:id="@+id/user_rating"
+                                            android:paddingTop="16dp"
+                                            android:text="@{details.movieUserRating}"
+                                            />
+                                    </LinearLayout>
+                            </LinearLayout>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/plot_synopsis"
+                                android:paddingTop="16dp"
+                                style="@style/TextAppearance.AppCompat.Notification.Title.Media"
+                                android:text="@{details.plotSynopsis}"
+                                />
+
             </LinearLayout>
     </ScrollView>
-</LinearLayout>
 </layout>

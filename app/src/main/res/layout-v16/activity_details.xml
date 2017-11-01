@@ -2,7 +2,11 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".DetailsActivity">
-<LinearLayout
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -20,13 +24,7 @@
      android:text="@{details.movieTitle}"
         />
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -50,7 +48,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/release_date"
+                    android:id="@+id/releaseDate"
                     android:paddingTop="16dp"
                     android:paddingBottom="16dp"
                     android:text="@{details.movieReleaseDate}"
@@ -72,7 +70,7 @@
             style="@style/TextAppearance.AppCompat.Notification.Title.Media"
             android:text="@{details.plotSynopsis}"
             />
-        </LinearLayout>
-        </ScrollView>
+
 </LinearLayout>
+</ScrollView>
 </layout>

@@ -15,6 +15,7 @@
     <string name="no_movies_returned">No Movies Returned!</string>
     <string name="error_occurred">Error Occurred!</string>
     <string name="no_connection">Network Connection not available!</string>
+    <string name="movie_missing_data">Missing data in the movie response</string>
     <string name="malformed_url">Malformed URL</string>
     <string name="built_uri">Built URI </string>
     <string name="no_url_response">No Response from URL: </string>
